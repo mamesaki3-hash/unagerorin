@@ -73,7 +73,7 @@ export const EpisodeModal: React.FC<EpisodeModalProps> = ({
                   <button
                     key={tag}
                     onClick={() => handleTagClick(tag)}
-                    className="px-2.5 py-1 border border-outline-variant text-[11px] text-outline rounded-full bg-white hover:border-primary hover:text-primary transition-all"
+                    className="px-2.5 py-1 border border-outline-variant text-[11px] text-outline rounded-full bg-white hover:border-primary hover:text-primary transition-all text-left"
                   >
                     #{tag}
                   </button>

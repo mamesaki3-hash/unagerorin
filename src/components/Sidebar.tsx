@@ -119,7 +119,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
             <button
               key={tag}
               onClick={() => onFilterChange({ type: 'tag', value: tag })}
-              className={`px-2.5 py-1 border text-[10px] rounded-full transition-all cursor-pointer ${
+              className={`px-2.5 py-1 border text-[10px] rounded-full transition-all cursor-pointer text-left ${
                 activeFilter.type === 'tag' && activeFilter.value === tag
                   ? 'bg-primary border-primary text-white shadow-sm'
                   : 'bg-white border-outline-variant text-outline hover:border-primary hover:text-primary'

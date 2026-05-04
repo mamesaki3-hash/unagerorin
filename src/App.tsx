@@ -17,6 +17,7 @@ export type Filter =
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<'new' | 'old'>('new');
 
   const filter = useMemo((): Filter => {
     const type = searchParams.get('filter');
@@ -80,9 +81,13 @@ export default function App() {
       <div className="fixed bottom-0 left-0 w-[500px] h-[500px] bg-tertiary/10 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
       
-      <Header 
+      <Header
         onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
         isMenuOpen={isMenuOpen}
+        onTitleClick={() => {
+          setFilter({ type: 'all' });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
       <div className="flex pt-16">
         <Sidebar 
@@ -102,7 +107,7 @@ export default function App() {
                   <button
                     key={tag}
                     onClick={() => setFilter({ type: 'tag', value: tag })}
-                    className="px-4 py-2 border border-gray-200 bg-white rounded-full text-sm text-[#1b1b1d] hover:border-primary hover:text-primary transition-all shadow-sm hover:shadow-md"
+                    className="px-4 py-2 border border-gray-200 bg-white rounded-full text-sm text-[#1b1b1d] hover:border-primary hover:text-primary transition-all shadow-sm hover:shadow-md text-left"
                   >
                     #{tag}
                   </button>
@@ -140,27 +145,35 @@ export default function App() {
             <div className={`grid grid-cols-1 ${filter.type === 'all' ? 'lg:grid-cols-2' : 'max-w-2xl mx-auto'} gap-x-10 gap-y-14`}>
               {filteredData.map((category) => (
                 <section key={category.title} id={category.title} className="flex flex-col gap-4 scroll-mt-20">
-                  <div className="flex items-center border-b border-gray-200 pb-2 min-w-0">
-                    <div className="flex items-center gap-3 min-w-0 w-full">
-                      <h3 className="text-xl font-bold text-[#1b1b1d] shrink-0">
-                        {category.title}
-                        <span className="text-xs ml-1 font-medium opacity-60">({category.episodes.length})</span>
-                      </h3>
-                      <div className="flex gap-1 overflow-x-auto no-scrollbar py-0.5 flex-nowrap">
-                        {category.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            onClick={() => setFilter({ type: 'tag', value: tag })}
-                            className="px-2 py-0.5 border border-outline-variant text-[10px] text-outline rounded-full bg-white hover:border-primary hover:text-primary transition-all cursor-pointer whitespace-nowrap shrink-0"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
+                  <div className="flex items-center border-b border-gray-200 pb-2 gap-2 min-w-0">
+                    <h3 className="text-xl font-bold text-[#1b1b1d] shrink-0">
+                      {category.title}
+                      <span className="text-xs ml-1 font-medium opacity-60">({category.episodes.length})</span>
+                    </h3>
+                    <div className="flex gap-1 overflow-x-auto no-scrollbar py-0.5 flex-nowrap flex-1 min-w-0">
+                      {category.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          onClick={() => setFilter({ type: 'tag', value: tag })}
+                          className="px-2 py-0.5 border border-outline-variant text-[10px] text-outline rounded-full bg-white hover:border-primary hover:text-primary transition-all cursor-pointer whitespace-nowrap shrink-0"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
                     </div>
+                    <select
+                      value={sortOrder}
+                      onChange={e => setSortOrder(e.target.value as 'new' | 'old')}
+                      className="shrink-0 text-[10px] font-bold text-[#1b1b1d] border border-gray-200 rounded-full px-2.5 py-1 bg-gray-200 hover:bg-gray-300 hover:border-gray-400 transition-all cursor-pointer outline-none appearance-none pr-5 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23555%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22M6%209l6%206%206-6%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_6px_center]"
+                    >
+                      <option value="new">新しい順</option>
+                      <option value="old">古い順</option>
+                    </select>
                   </div>
                   <div className="flex flex-col gap-3">
-                    {(filter.type === 'all' ? category.episodes.slice(0, 3) : category.episodes).map((episode) => (
+                    {([...category.episodes].sort((a, b) =>
+                      sortOrder === 'new' ? Number(b.id) - Number(a.id) : Number(a.id) - Number(b.id)
+                    ).slice(0, filter.type === 'all' ? 3 : undefined)).map((episode) => (
                       <EpisodeCard
                         key={episode.id}
                         {...episode}
