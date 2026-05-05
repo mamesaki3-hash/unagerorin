@@ -19,8 +19,8 @@ interface EpisodeCardProps {
 export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, description, audio, spotify, tags, onTagClick }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const truncatedDescription = description.length > 120
-    ? description.substring(0, 120) + '...'
+  const truncatedDescription = description.length > 130
+    ? description.substring(0, 130) + '...'
     : description;
 
   return (
