@@ -10,12 +10,13 @@ interface EpisodeCardProps {
   date: string;
   description: string;
   audio?: string;
+  spotify?: string;
   transcript: string;
   tags: string[];
   onTagClick?: (tag: string) => void;
 }
 
-export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, description, audio, tags, onTagClick }) => {
+export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, description, audio, spotify, tags, onTagClick }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const truncatedDescription = description.length > 120
@@ -51,7 +52,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
             </div>
             <div className="flex justify-end gap-2">
               <a
-                href="https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP"
+                href={spotify ?? 'https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP'}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
@@ -92,6 +93,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
           date={date}
           description={description}
           audio={audio}
+          spotify={spotify}
           tags={tags}
           onClose={() => setModalOpen(false)}
           onTagClick={onTagClick}

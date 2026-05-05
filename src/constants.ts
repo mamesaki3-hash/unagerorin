@@ -4,7 +4,7 @@ function formatDate(dateStr: string): string {
   return dateStr.replace(/-/g, '.');
 }
 
-const categoryOrder = ['初心者向け', 'ゲスト回', 'お下品回', '擬音', '晴美', '流行語大賞'];
+const categoryOrder = ['初心者向け', 'ゲスト回', 'お下品回', '擬音', '名前を言ってはいけないあの人', '流行語大賞'];
 
 const grouped = new Map<string, typeof episodesData>(
   categoryOrder.map(title => [title, []])
@@ -25,6 +25,7 @@ export const CATEGORIES = Array.from(grouped.entries())
       date: formatDate(ep.date),
       description: (ep as { description?: string }).description ?? ep.transcript.slice(0, 120),
       audio: ep.audio,
+      spotify: (ep as { spotify?: string }).spotify,
       tags: (ep as { tags?: string[] }).tags ?? [],
       transcript: ep.transcript,
     }));

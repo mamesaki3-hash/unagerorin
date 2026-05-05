@@ -9,13 +9,14 @@ interface EpisodeModalProps {
   date: string;
   description: string;
   audio?: string;
+  spotify?: string;
   tags: string[];
   onClose: () => void;
   onTagClick?: (tag: string) => void;
 }
 
 export const EpisodeModal: React.FC<EpisodeModalProps> = ({
-  title, date, description, audio, tags, onClose, onTagClick,
+  title, date, description, audio, spotify, tags, onClose, onTagClick,
 }) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
@@ -83,7 +84,7 @@ export const EpisodeModal: React.FC<EpisodeModalProps> = ({
 
             <div className="flex justify-end gap-2 pt-1">
               <a
-                href="https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP"
+                href={spotify ?? 'https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white text-xs font-bold flex items-center gap-1.5 px-4 py-2 rounded-full hover:opacity-90 transition-opacity active:scale-95"
