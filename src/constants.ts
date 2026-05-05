@@ -4,7 +4,7 @@ function formatDate(dateStr: string): string {
   return dateStr.replace(/-/g, '.');
 }
 
-const categoryOrder = ['初心者向け', 'ゲスト回', 'お下品回', '擬音', '名前を言ってはいけないあの人', '流行語大賞'];
+const categoryOrder = ['初心者向け', 'ゲスト回', 'お下品回', '擬音', '名前を言ってはいけないあの人', '幼馴染トーク', '流行語大賞'];
 
 const grouped = new Map<string, typeof episodesData>(
   categoryOrder.map(title => [title, []])
