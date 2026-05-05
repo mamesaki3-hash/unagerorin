@@ -11,9 +11,12 @@ const grouped = new Map<string, typeof episodesData>(
 );
 
 for (const ep of episodesData) {
-  const cat = (ep as { category?: string }).category ?? '未分類';
-  if (!grouped.has(cat)) grouped.set(cat, []);
-  grouped.get(cat)!.push(ep);
+  const cats = (ep as { categories?: string[] }).categories
+    ?? [(ep as { category?: string }).category ?? '未分類'];
+  for (const cat of cats) {
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(ep);
+  }
 }
 
 export const CATEGORIES = Array.from(grouped.entries())
