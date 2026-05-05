@@ -19,19 +19,32 @@ for (const ep of episodesData) {
   }
 }
 
-export const CATEGORIES = Array.from(grouped.entries())
-  .filter(([, eps]) => eps.length > 0)
-  .map(([title, eps]) => {
-    const episodes = eps.map(ep => ({
-      id: String(ep.num),
-      title: ep.title,
-      date: formatDate(ep.date),
-      description: (ep as { description?: string }).description ?? ep.transcript.slice(0, 120),
-      audio: ep.audio,
-      spotify: (ep as { spotify?: string }).spotify,
-      tags: (ep as { tags?: string[] }).tags ?? [],
-      transcript: ep.transcript,
-    }));
-    const tags = [...new Set(episodes.flatMap(ep => ep.tags))];
-    return { title, tags, episodes };
-  });
+function mapEpisodes(eps: typeof episodesData) {
+  return eps.map(ep => ({
+    id: String(ep.num),
+    title: ep.title,
+    date: formatDate(ep.date),
+    description: (ep as { description?: string }).description ?? ep.transcript.slice(0, 120),
+    audio: ep.audio,
+    spotify: (ep as { spotify?: string }).spotify,
+    tags: (ep as { tags?: string[] }).tags ?? [],
+    transcript: ep.transcript,
+  }));
+}
+
+const allEpisodes = mapEpisodes(episodesData);
+
+export const CATEGORIES = [
+  ...Array.from(grouped.entries())
+    .filter(([, eps]) => eps.length > 0)
+    .map(([title, eps]) => {
+      const episodes = mapEpisodes(eps);
+      const tags = [...new Set(episodes.flatMap(ep => ep.tags))];
+      return { title, tags, episodes };
+    }),
+  {
+    title: '全エピソード',
+    tags: [...new Set(allEpisodes.flatMap(ep => ep.tags))],
+    episodes: allEpisodes,
+  },
+];
