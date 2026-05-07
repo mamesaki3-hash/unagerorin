@@ -185,10 +185,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
                   <button
                     key={category.title}
                     onClick={() => handleFilterChange({ type: 'category', value: category.title })}
-                    className={`text-[11px] transition-colors py-1 text-left font-medium ${
+                    className={`text-xs transition-colors py-1 text-left font-medium ${
                       activeFilter.type === 'category' && activeFilter.value === category.title
                         ? 'text-primary font-bold'
-                        : 'text-[#F208D1] hover:text-primary'
+                        : 'text-[#F20089] hover:text-primary'
                     }`}
                   >
                     {category.title}
