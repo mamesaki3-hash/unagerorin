@@ -169,10 +169,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
                 onClick={() => handleFilterChange({ type: 'all' })}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                className={`w-full px-3 py-2 flex items-center gap-2.5 rounded-lg transition-colors ${
+                className={`w-full px-3 py-2 flex items-center gap-2.5 rounded-lg transition-all ${
                   activeFilter.type === 'all'
-                    ? 'bg-primary-container text-white font-semibold shadow-sm'
-                    : 'text-outline hover:bg-gray-100'
+                    ? 'bg-[#F20089] text-white font-bold shadow-sm'
+                    : 'text-[#F20089] hover:opacity-60'
                 }`}
               >
                 <item.icon className="w-4 h-4" />
