@@ -15,12 +15,21 @@ const navItems = [
   { id: 'all', icon: List, label: '全カテゴリー' },
 ];
 
-const allTags = [...new Set(
-  CATEGORIES.flatMap(cat => [
-    ...cat.tags,
-    ...cat.episodes.flatMap(ep => ep.tags),
-  ])
-)].sort();
+// Deduplicate episodes across categories, then count tag frequency
+const uniqueEpisodes = [...new Map(
+  CATEGORIES.flatMap(cat => cat.episodes).map(ep => [ep.id, ep])
+).values()];
+
+const tagFrequency = new Map<string, number>();
+for (const ep of uniqueEpisodes) {
+  for (const tag of ep.tags) {
+    tagFrequency.set(tag, (tagFrequency.get(tag) ?? 0) + 1);
+  }
+}
+
+const allTags = [...tagFrequency.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([tag]) => tag);
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, isOpen, onClose }) => {
   const [searchValue, setSearchValue] = useState('');

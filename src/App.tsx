@@ -37,9 +37,20 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const allTags = useMemo(() => [...new Set(
-    CATEGORIES.flatMap(cat => [...cat.tags, ...cat.episodes.flatMap(ep => ep.tags)])
-  )].sort(), []);
+  const allTags = useMemo(() => {
+    const uniqueEpisodes = [...new Map(
+      CATEGORIES.flatMap(cat => cat.episodes).map(ep => [ep.id, ep])
+    ).values()];
+    const tagFrequency = new Map<string, number>();
+    for (const ep of uniqueEpisodes) {
+      for (const tag of ep.tags) {
+        tagFrequency.set(tag, (tagFrequency.get(tag) ?? 0) + 1);
+      }
+    }
+    return [...tagFrequency.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag]) => tag);
+  }, []);
 
   const filteredData = useMemo(() => {
     if (filter.type === 'all') return CATEGORIES;
