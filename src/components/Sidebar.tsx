@@ -67,6 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
     setSearchHistory(newHistory);
     saveHistory(newHistory);
     setShowHistory(false);
+    setSearchValue('');
     handleFilterChange({ type: 'search', value: trimmed });
   };
 
@@ -83,8 +84,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
   };
 
   useEffect(() => {
-    if (activeFilter.type === 'search' && activeFilter.value !== searchValue) {
-      setSearchValue(activeFilter.value);
+    if (activeFilter.type !== 'search') {
+      setSearchValue('');
     }
   }, [activeFilter]);
 
