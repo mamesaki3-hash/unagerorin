@@ -229,9 +229,7 @@ export default function App() {
               <p className="text-[11px]">© 2024 マユリカのうなげろりん エピソード検索</p>
             </div>
             <div className="flex gap-6 text-[11px] font-medium">
-              <a href="#" className="hover:text-primary hover:underline transition-all">利用規約</a>
-              <a href="#" className="hover:text-primary hover:underline transition-all">プライバシーポリシー</a>
-              <a href="#" className="hover:text-primary hover:underline transition-all">お問い合わせ</a>
+              <span className="text-gray-300 cursor-not-allowed">お問い合わせ</span>
             </div>
           </footer>
         </main>
