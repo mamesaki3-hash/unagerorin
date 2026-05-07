@@ -225,8 +225,7 @@ export default function App() {
 
           <footer className="mt-20 w-full border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-outline">
             <div className="flex flex-col items-center md:items-start gap-1">
-              <span className="font-bold text-primary text-base">うなげろりん検索</span>
-              <p className="text-[11px]">© 2024 マユリカのうなげろりん エピソード検索</p>
+              <span className="font-bold text-[#1b1b1d] text-base">うなげろりん！！エピソード検索</span>
             </div>
             <div className="flex gap-6 text-[11px] font-medium">
               <span className="text-gray-300 cursor-not-allowed">お問い合わせ</span>
