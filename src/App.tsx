@@ -181,7 +181,7 @@ export default function App() {
               {filteredData.map((category) => (
                 <section key={category.title || 'results'} id={category.title} className="flex flex-col gap-4 scroll-mt-20">
                   {filter.type !== 'tag' && filter.type !== 'search' && <div className="flex items-center border-b border-gray-200 pb-2 gap-2 min-w-0">
-                    <h3 className="text-xl font-bold text-[#1b1b1d] shrink-0">
+                    <h3 className="text-lg md:text-xl font-bold text-[#1b1b1d] shrink-0">
                       {category.title}
                       <span className="text-xs ml-1 font-medium opacity-60">({category.episodes.length})</span>
                     </h3>
