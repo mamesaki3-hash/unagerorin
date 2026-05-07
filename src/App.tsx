@@ -61,35 +61,23 @@ export default function App() {
     }
     
     if (filter.type === 'tag') {
-      // Count unique episodes matching this tag
+      const catMap = new Map<string, string[]>();
+      for (const cat of CATEGORIES) {
+        for (const ep of cat.episodes) {
+          if (ep.tags.includes(filter.value)) {
+            if (!catMap.has(ep.id)) catMap.set(ep.id, []);
+            catMap.get(ep.id)!.push(cat.title);
+          }
+        }
+      }
       const seen = new Set<string>();
-      const uniqueMatches = CATEGORIES.flatMap(cat => cat.episodes).filter(ep => {
+      const deduped = CATEGORIES.flatMap(cat => cat.episodes).filter(ep => {
         if (!ep.tags.includes(filter.value) || seen.has(ep.id)) return false;
         seen.add(ep.id);
         return true;
-      });
-
-      if (uniqueMatches.length >= 2) {
-        // 2枚以上: カテゴリーごとにグループ表示（元のデザイン）
-        return CATEGORIES.map(cat => ({
-          ...cat,
-          episodes: cat.episodes.filter(ep => ep.tags.includes(filter.value))
-        })).filter(cat => cat.episodes.length > 0);
-      } else {
-        // 1枚のみ: フラット表示 ＋ カード内にカテゴリー表示
-        const catMap = new Map<string, string[]>();
-        for (const cat of CATEGORIES) {
-          for (const ep of cat.episodes) {
-            if (ep.tags.includes(filter.value)) {
-              if (!catMap.has(ep.id)) catMap.set(ep.id, []);
-              catMap.get(ep.id)!.push(cat.title);
-            }
-          }
-        }
-        const withCats = uniqueMatches.map(ep => ({ ...ep, episodeCategories: catMap.get(ep.id) ?? [] }));
-        if (withCats.length === 0) return [];
-        return [{ title: '', tags: [], episodes: withCats }];
-      }
+      }).map(ep => ({ ...ep, episodeCategories: catMap.get(ep.id) ?? [] }));
+      if (deduped.length === 0) return [];
+      return [{ title: '', tags: [], episodes: deduped }];
     }
 
     if (filter.type === 'search') {
@@ -221,12 +209,15 @@ export default function App() {
                     {([...category.episodes].sort((a, b) =>
                       sortOrder === 'new' ? Number(b.id) - Number(a.id) : Number(a.id) - Number(b.id)
                     ).slice(0, filter.type === 'all' ? 3 : undefined)).map((episode) => (
-                      <EpisodeCard
-                        key={episode.id}
-                        {...episode}
-                        episodeCategories={(episode as any).episodeCategories}
-                        onTagClick={(tag) => setFilter({ type: 'tag', value: tag })}
-                      />
+                      <div key={episode.id}>
+                        {(episode as any).episodeCategories?.length > 0 && (
+                          <p className="text-[12px] text-outline mb-1">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
+                        )}
+                        <EpisodeCard
+                          {...episode}
+                          onTagClick={(tag) => setFilter({ type: 'tag', value: tag })}
+                        />
+                      </div>
                     ))}
                     {filter.type === 'all' && category.episodes.length > 3 && (
                       <div className="mt-2 flex justify-center">

@@ -51,9 +51,6 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
                 </span>
               ))}
             </div>
-            {episodeCategories && episodeCategories.length > 0 && (
-              <p className="text-[12px] text-outline mb-1">カテゴリー：{episodeCategories.join('、')}</p>
-            )}
             <div className="flex justify-end gap-2">
               <a
                 href={spotify ?? 'https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP'}
