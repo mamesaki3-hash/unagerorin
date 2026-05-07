@@ -79,6 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
               className="w-full h-9 bg-white border border-outline-variant focus:border-primary/50 rounded-lg pl-9 pr-4 text-xs outline-none transition-all placeholder:text-outline"
             />
           </form>
+          <p className="mt-1.5 px-1 text-[10px] text-outline leading-relaxed">「そうよ」「ニチッ」「豚」などでも検索できます。</p>
         </section>
 
         <nav className="flex flex-col gap-0.5">
