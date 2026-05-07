@@ -205,13 +205,13 @@ export default function App() {
                       <option value="old">古い順</option>
                     </select>
                   </div>}
-                  <div className="flex flex-col gap-3">
+                  <div className={`flex flex-col ${filter.type === 'tag' || filter.type === 'search' ? 'gap-8' : 'gap-3'}`}>
                     {([...category.episodes].sort((a, b) =>
                       sortOrder === 'new' ? Number(b.id) - Number(a.id) : Number(a.id) - Number(b.id)
                     ).slice(0, filter.type === 'all' ? 3 : undefined)).map((episode) => (
                       <div key={episode.id}>
                         {(episode as any).episodeCategories?.length > 0 && (
-                          <p className="text-[12px] text-outline mt-8 mb-2">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
+                          <p className="text-[12px] text-outline mb-2">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
                         )}
                         <EpisodeCard
                           {...episode}
