@@ -209,12 +209,15 @@ export default function App() {
                     {([...category.episodes].sort((a, b) =>
                       sortOrder === 'new' ? Number(b.id) - Number(a.id) : Number(a.id) - Number(b.id)
                     ).slice(0, filter.type === 'all' ? 3 : undefined)).map((episode) => (
-                      <EpisodeCard
-                        key={episode.id}
-                        {...episode}
-                        episodeCategories={(episode as any).episodeCategories}
-                        onTagClick={(tag) => setFilter({ type: 'tag', value: tag })}
-                      />
+                      <div key={episode.id}>
+                        {(episode as any).episodeCategories?.length > 0 && (
+                          <p className="text-[12px] text-outline mb-1">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
+                        )}
+                        <EpisodeCard
+                          {...episode}
+                          onTagClick={(tag) => setFilter({ type: 'tag', value: tag })}
+                        />
+                      </div>
                     ))}
                     {filter.type === 'all' && category.episodes.length > 3 && (
                       <div className="mt-2 flex justify-center">
