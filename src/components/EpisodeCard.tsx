@@ -13,10 +13,11 @@ interface EpisodeCardProps {
   spotify?: string;
   transcript: string;
   tags: string[];
+  episodeCategories?: string[];
   onTagClick?: (tag: string) => void;
 }
 
-export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, description, audio, spotify, tags, onTagClick }) => {
+export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, description, audio, spotify, tags, episodeCategories, onTagClick }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const truncatedDescription = description.length > 130
@@ -50,6 +51,9 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
                 </span>
               ))}
             </div>
+            {episodeCategories && episodeCategories.length > 0 && (
+              <p className="text-[10px] text-outline">カテゴリー：{episodeCategories.join('、')}</p>
+            )}
             <div className="flex justify-end gap-2">
               <a
                 href={spotify ?? 'https://open.spotify.com/show/223Rj9cjUGjcCY1CUP4ahP'}

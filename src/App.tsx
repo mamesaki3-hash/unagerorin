@@ -61,25 +61,49 @@ export default function App() {
     }
     
     if (filter.type === 'tag') {
-      // Find categories that have at least one episode with this tag, 
-      // then filter those episodes within the category
-      return CATEGORIES.map(cat => ({
-        ...cat,
-        episodes: cat.episodes.filter(ep => ep.tags.includes(filter.value))
-      })).filter(cat => cat.episodes.length > 0);
+      const catMap = new Map<string, string[]>();
+      for (const cat of CATEGORIES) {
+        for (const ep of cat.episodes) {
+          if (ep.tags.includes(filter.value)) {
+            if (!catMap.has(ep.id)) catMap.set(ep.id, []);
+            catMap.get(ep.id)!.push(cat.title);
+          }
+        }
+      }
+      const seen = new Set<string>();
+      const deduped = CATEGORIES.flatMap(cat => cat.episodes).filter(ep => {
+        if (!ep.tags.includes(filter.value) || seen.has(ep.id)) return false;
+        seen.add(ep.id);
+        return true;
+      }).map(ep => ({ ...ep, episodeCategories: catMap.get(ep.id) ?? [] }));
+      if (deduped.length === 0) return [];
+      return [{ title: '', tags: [], episodes: deduped }];
     }
-    
+
     if (filter.type === 'search') {
       const searchTerm = filter.value.toLowerCase();
-      return CATEGORIES.map(cat => ({
-        ...cat,
-        episodes: cat.episodes.filter(ep =>
-          ep.title.toLowerCase().includes(searchTerm) ||
-          ep.description.toLowerCase().includes(searchTerm) ||
-          ep.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
-          ep.transcript.toLowerCase().includes(searchTerm)
-        )
-      })).filter(cat => cat.episodes.length > 0);
+      const matches = (ep: typeof CATEGORIES[0]['episodes'][0]) =>
+        ep.title.toLowerCase().includes(searchTerm) ||
+        ep.description.toLowerCase().includes(searchTerm) ||
+        ep.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+        ep.transcript.toLowerCase().includes(searchTerm);
+      const catMap = new Map<string, string[]>();
+      for (const cat of CATEGORIES) {
+        for (const ep of cat.episodes) {
+          if (matches(ep)) {
+            if (!catMap.has(ep.id)) catMap.set(ep.id, []);
+            catMap.get(ep.id)!.push(cat.title);
+          }
+        }
+      }
+      const seen = new Set<string>();
+      const deduped = CATEGORIES.flatMap(cat => cat.episodes).filter(ep => {
+        if (!matches(ep) || seen.has(ep.id)) return false;
+        seen.add(ep.id);
+        return true;
+      }).map(ep => ({ ...ep, episodeCategories: catMap.get(ep.id) ?? [] }));
+      if (deduped.length === 0) return [];
+      return [{ title: '', tags: [], episodes: deduped }];
     }
     
     return CATEGORIES;
@@ -155,8 +179,8 @@ export default function App() {
           {filter.type !== 'tags' && (
             <div className={`grid grid-cols-1 ${filter.type === 'all' ? 'lg:grid-cols-2' : 'max-w-2xl mx-auto'} gap-x-10 gap-y-14`}>
               {filteredData.map((category) => (
-                <section key={category.title} id={category.title} className="flex flex-col gap-4 scroll-mt-20">
-                  <div className="flex items-center border-b border-gray-200 pb-2 gap-2 min-w-0">
+                <section key={category.title || 'results'} id={category.title} className="flex flex-col gap-4 scroll-mt-20">
+                  {filter.type !== 'tag' && filter.type !== 'search' && <div className="flex items-center border-b border-gray-200 pb-2 gap-2 min-w-0">
                     <h3 className="text-xl font-bold text-[#1b1b1d] shrink-0">
                       {category.title}
                       <span className="text-xs ml-1 font-medium opacity-60">({category.episodes.length})</span>
@@ -180,7 +204,7 @@ export default function App() {
                       <option value="new">新しい順</option>
                       <option value="old">古い順</option>
                     </select>
-                  </div>
+                  </div>}
                   <div className="flex flex-col gap-3">
                     {([...category.episodes].sort((a, b) =>
                       sortOrder === 'new' ? Number(b.id) - Number(a.id) : Number(a.id) - Number(b.id)
@@ -188,6 +212,7 @@ export default function App() {
                       <EpisodeCard
                         key={episode.id}
                         {...episode}
+                        episodeCategories={(episode as any).episodeCategories}
                         onTagClick={(tag) => setFilter({ type: 'tag', value: tag })}
                       />
                     ))}
