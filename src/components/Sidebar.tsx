@@ -180,7 +180,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
               </motion.button>
 
               {/* Categories listed under "All Episodes" */}
-              <div className="mt-1.5 mb-2 flex flex-col gap-0.5 ml-5">
+              <div className="mt-1.5 mb-2 flex flex-col gap-0.5 ml-7">
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.title}
