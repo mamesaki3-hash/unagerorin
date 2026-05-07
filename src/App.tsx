@@ -135,8 +135,8 @@ export default function App() {
           
           {filter.type === 'tags' && (
             <div className="w-full">
-              <h2 className="text-2xl font-bold text-[#1b1b1d] mb-2">タグ一覧</h2>
-              <p className="text-xs text-outline mb-8">全てのエピソードから抽出された検索用タグです</p>
+              <h2 className="text-xl md:text-2xl font-bold text-[#1b1b1d] mb-2">タグ一覧</h2>
+              <p className="text-xs text-outline mb-4 md:mb-8">全てのエピソードから抽出された検索用タグです</p>
               <div className="flex flex-wrap gap-2">
                 {allTags.map(tag => (
                   <button
