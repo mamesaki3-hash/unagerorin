@@ -211,7 +211,7 @@ export default function App() {
                     ).slice(0, filter.type === 'all' ? 3 : undefined)).map((episode) => (
                       <div key={episode.id}>
                         {(episode as any).episodeCategories?.length > 0 && (
-                          <p className="text-[12px] text-outline mt-4 mb-2">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
+                          <p className="text-[12px] text-outline mt-8 mb-2">カテゴリー：{(episode as any).episodeCategories.join('、')}</p>
                         )}
                         <EpisodeCard
                           {...episode}
