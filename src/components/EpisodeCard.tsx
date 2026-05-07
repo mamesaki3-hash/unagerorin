@@ -29,7 +29,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
       <motion.div
         whileHover={{ y: -4 }}
         onClick={() => setModalOpen(true)}
-        className="bg-white rounded-lg border border-gray-100 p-4 transition-all cursor-pointer h-full flex flex-col group"
+        className="bg-white rounded-lg border border-gray-100 p-4 transition-all cursor-pointer flex flex-col group"
       >
         <div className="flex-1 min-w-0 flex flex-col">
           <div className="flex justify-between items-start mb-2 shrink-0">
