@@ -180,17 +180,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
               </motion.button>
 
               {/* Categories listed under "All Episodes" */}
-              <div className="ml-7 mt-1.5 mb-2 flex flex-col gap-1 border-l-2 border-gray-100 pl-2">
+              <div className="mt-1.5 mb-2 flex flex-col gap-0.5">
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.title}
                     onClick={() => handleFilterChange({ type: 'category', value: category.title })}
-                    className={`text-xs transition-all py-1 px-2 rounded-md text-left font-medium ${
+                    className={`text-xs transition-all py-1 px-2 rounded-md text-left font-medium flex items-center gap-2 ${
                       activeFilter.type === 'category' && activeFilter.value === category.title
-                        ? 'bg-[#F20089] text-white font-bold'
+                        ? 'bg-[#F20089] text-white'
                         : 'text-[#F20089] hover:opacity-60'
                     }`}
                   >
+                    <span className="text-[8px] shrink-0">●</span>
                     {category.title}
                   </button>
                 ))}
