@@ -124,7 +124,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
           <h3 className="text-xs font-bold text-[#1b1b1d]">タグ一覧</h3>
         </div>
         <div className="flex flex-wrap gap-1.5 px-1">
-          {allTags.slice(0, 50).map((tag) => (
+          {allTags.slice(0, 35).map((tag) => (
             <button
               key={tag}
               onClick={() => onFilterChange({ type: 'tag', value: tag })}
@@ -138,7 +138,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
             </button>
           ))}
         </div>
-        {allTags.length > 50 && (
+        {allTags.length > 35 && (
           <button
             onClick={() => handleFilterChange({ type: 'tags' })}
             className={`mt-3 w-full py-2 border rounded-lg text-[11px] font-bold transition-all ${
