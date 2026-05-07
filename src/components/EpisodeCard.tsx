@@ -52,7 +52,7 @@ export const EpisodeCard: React.FC<EpisodeCardProps> = ({ title, date, descripti
               ))}
             </div>
             {episodeCategories && episodeCategories.length > 0 && (
-              <p className="text-[10px] text-outline">カテゴリー：{episodeCategories.join('、')}</p>
+              <p className="text-[12px] text-outline">カテゴリー：{episodeCategories.join('、')}</p>
             )}
             <div className="flex justify-end gap-2">
               <a
