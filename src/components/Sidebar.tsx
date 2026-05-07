@@ -191,7 +191,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeFilter, onFilterChange, 
                         : 'text-[#F20089] hover:opacity-60'
                     }`}
                   >
-                    <span className="text-[4px] shrink-0">●</span>
+                    <span className="text-[3px] shrink-0">●</span>
                     {category.title}
                   </button>
                 ))}
